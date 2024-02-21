@@ -1,0 +1,52 @@
+{% extends "app/base.html" %}
+{% load crispy_forms_tags %}
+{% block note_content %}
+<div class="clo-lg-6 vh-100 position-fixed top-0 ml-2 w-50">
+<div class="content-section bg-light border rounded border-primary border-3">
+    <form method="POST">
+        {% csrf_token %}
+        <fieldset class="form-group">
+            <legend class="border-bottom mb-4">Note</legend>
+            {{ form|crispy }}
+        </fieldset>
+        <div class="form-group">
+            <button class="btn btn-success" type="button" id="save-button" data-container="body" data-placement="bottom"
+                    data-content="Note Saved">Save</button>
+            <button class="btn btn-primary" type="button" id="suggest-button" data-container="body" data-placement="bottom"
+                    data-content="Selected text too short">
+              <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" id="suggest-button-loader"></span>
+              <span id="suggest-button-text">Suggest</span>
+            </button>
+        </div>
+    </form>
+</div>
+</div>
+{% endblock note_content %}
+{% block source_content %}
+<div class="col-lg-6 vh-100 ml-auto">
+<article class="media content-section bg-light border rounded border-warning border-3">
+    <div class="media-body">
+        <legend class="border-bottom mb-4">Source</legend>
+        <div class="dropdown">
+            <p class="article-title dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+               id="source-form-title">Select Source</p>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                {% for source in sources %}
+                <a class="dropdown-item source-dropdown-item" value="{{ source.title }}"
+                   data-select-dropdown=".finder-form--{{ source.pk }}">{{ source.title }}</a>
+                {% endfor %}
+          </div>
+        </div>
+        {% for source in sources %}
+        <div class="source-section-div finder-form--{{ source.pk }} finder-form__dropdown hide">
+<!--            {% for section in source.split_content %}-->
+<!--            <span class="source-section">{{ section|safe }}</span>-->
+<!--            {{ section|safe }}-->
+<!--            {% endfor %}-->
+            {{ source.content|safe }}
+        </div>
+        {% endfor %}
+    </div>
+</article>
+</div>
+{% endblock source_content %}
